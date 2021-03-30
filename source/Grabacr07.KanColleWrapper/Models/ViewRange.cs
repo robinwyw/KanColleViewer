@@ -302,12 +302,13 @@ namespace Grabacr07.KanColleWrapper.Models
 				case SlotItemType.潜水艦魚雷:
 				case SlotItemType.ソナー:
 				case SlotItemType.大型ソナー:
-				case SlotItemType.特殊潜航艇:
 				case SlotItemType.探照灯:
 				case SlotItemType.大型探照灯:
 				case SlotItemType.航空要員:
 				case SlotItemType.水上艦要員:
 				case SlotItemType.司令部施設:
+				case SlotItemType.特殊潜航艇:
+				case SlotItemType.上陸用舟艇:
 					return 0.6;
 
 				case SlotItemType.艦上攻撃機:
