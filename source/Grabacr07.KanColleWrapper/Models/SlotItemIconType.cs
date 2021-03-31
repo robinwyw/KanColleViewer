@@ -244,5 +244,10 @@ namespace Grabacr07.KanColleWrapper.Models
 		/// 陸上対潜哨戒機。
 		/// </summary>
 		LandBasedAntiSubmarineAttacker = 47,
+
+		/// <summary>
+		/// 大型陸上機。
+		/// </summary>
+		HeavyBomber = 49,
 	}
 }

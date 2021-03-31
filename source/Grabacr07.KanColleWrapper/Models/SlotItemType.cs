@@ -55,6 +55,7 @@ namespace Grabacr07.KanColleWrapper.Models
 		陸上偵察機 = 49,
 		輸送機材 = 50,
 		潜水艦装備 = 51,
+		大型陸上機 = 53,
 		噴式戦闘機 = 56,
 		噴式戦闘爆撃機 = 57,
 		噴式攻撃機 = 58,
