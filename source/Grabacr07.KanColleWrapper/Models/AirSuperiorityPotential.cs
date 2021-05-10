@@ -126,7 +126,10 @@ namespace Grabacr07.KanColleWrapper.Models
 			protected override double GetAirSuperiority(SlotItem slotItem, int onslot)
 			{
 				// 爆戦の装備改修による対空値加算 (★ x 0.25)
-				return (slotItem.Info.AA + slotItem.Level * 0.25) * Math.Sqrt(onslot);
+				return (slotItem.Info.Id == 60 && slotItem.Info.Name == "零式艦戦62型(爆戦)") ||
+					   (slotItem.Info.Id == 154 && slotItem.Info.Name == "零戦62型(爆戦/岩井隊)") ||
+					   (slotItem.Info.Id == 219 && slotItem.Info.Name == "零式艦戦63型(爆戦)") ?
+							(slotItem.Info.AA + slotItem.Level * 0.25) * Math.Sqrt(onslot) : slotItem.Info.AA * Math.Sqrt(onslot);
 			}
 
 			protected override double GetProficiencyBonus(SlotItem slotItem, AirSuperiorityCalculationOptions options)
