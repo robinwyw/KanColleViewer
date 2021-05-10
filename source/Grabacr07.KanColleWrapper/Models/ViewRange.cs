@@ -223,7 +223,13 @@ namespace Grabacr07.KanColleWrapper.Models
 				.Sum(x => (x.Info.ViewRange + GetLevelCoefficient(x)) * GetTypeCoefficient(x.Info.Type));
 
 			var shipScore = ships
-				.Select(x => x.ViewRange - x.EquippedItems.Sum(s => s.Item.Info.RawData.api_saku))
+				.Select(x =>
+				{
+					var ex = x.EquippedItems.Any(s => s.Item.Info.Id == 315 && s.Item.Info.Name == "SG レーダー(初期型)") ?
+								(x.Info.SortId == 451 && x.Info.Name == "丹陽") || (x.Info.SortId == 456 && x.Info.Name == "雪風改二") ?
+									3 : 0 : 0;
+					return x.ViewRange - x.EquippedItems.Sum(s => s.Item.Info.RawData.api_saku) - ex;
+				})
 				.Sum(x => Math.Sqrt(x));
 
 			var admiralScore = Math.Ceiling(KanColleClient.Current.Homeport.Admiral.Level * 0.4);
