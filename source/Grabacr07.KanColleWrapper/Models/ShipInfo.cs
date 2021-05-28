@@ -14,6 +14,7 @@ namespace Grabacr07.KanColleWrapper.Models
 	public class ShipInfo : RawDataWrapper<kcsapi_mst_ship>, IIdentifiable
 	{
 		private ShipType shipType;
+		private ShipClass? shipClass;
 
 		/// <summary>
 		/// 艦を一意に識別する ID を取得します。
@@ -31,6 +32,11 @@ namespace Grabacr07.KanColleWrapper.Models
 		/// 艦種を取得します。
 		/// </summary>
 		public ShipType ShipType => this.shipType ?? (this.shipType = KanColleClient.Current.Master.ShipTypes[this.RawData.api_stype]) ?? ShipType.Dummy;
+
+		/// <summary>
+		/// 艦型を取得します。
+		/// </summary>
+		public ShipClass ShipClass => this.shipClass ?? (ShipClass)(this.shipClass = (ShipClass)(this.RawData?.api_ctype ?? 0));
 
 		/// <summary>
 		/// 各装備スロットの最大搭載機数を取得します。
