@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +13,7 @@ namespace Grabacr07.KanColleWrapper.Models.Raw
 		public string api_name { get; set; }
 		public string api_yomi { get; set; }
 		public int api_stype { get; set; }
+		public int api_ctype { get; set; }
 		public int api_afterlv { get; set; }
 		public string api_aftershipid { get; set; }
 		public int[] api_taik { get; set; }
