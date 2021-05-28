@@ -25,7 +25,7 @@ namespace Grabacr07.KanColleWrapper.Models
 		public static double GetImprovementBonus(this SlotItem slotItem, ImprovementBonusCalculationOptions option)
 		{
 			var calculator = option.GetCalculator();
-			return calculator.GetImprovementBonus(slotItem);
+			return Math.Floor(calculator.GetImprovementBonus(slotItem) * 10) / 10;
 		}
 
 		private static ImprovementBonusCalculator GetCalculator(this ImprovementBonusCalculationOptions option)
@@ -61,13 +61,16 @@ namespace Grabacr07.KanColleWrapper.Models
 				switch (slotItem.Info.Type)
 				{
 					case SlotItemType.小口径主砲:
-					case SlotItemType.対空機銃:
+					case SlotItemType.小型電探:
 					case SlotItemType.対艦強化弾:
+					case SlotItemType.対空機銃:
 						return 0.5 * Math.Sqrt(slotItem.Level);
 
 					case SlotItemType.中口径主砲:
 					case SlotItemType.大口径主砲:
 					case SlotItemType.大口径主砲_II:
+					case SlotItemType.大型電探:
+					case SlotItemType.大型電探_II:
 						return Math.Sqrt(slotItem.Level);
 
 					case SlotItemType.副砲:
