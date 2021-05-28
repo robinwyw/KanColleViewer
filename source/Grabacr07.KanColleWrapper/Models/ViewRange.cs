@@ -227,7 +227,12 @@ namespace Grabacr07.KanColleWrapper.Models
 				{
 					var ex = x.EquippedItems.Any(s => s.Item.Info.Id == 315 && s.Item.Info.Name == "SG レーダー(初期型)") ?
 								(x.Info.SortId == 451 && x.Info.Name == "丹陽") || (x.Info.SortId == 456 && x.Info.Name == "雪風改二") ?
-									3 : 0 : 0;
+									3 :
+								(x.Info.ShipClass == ShipClass.Fletcher級) || (x.Info.ShipClass == ShipClass.John_C_Butler級) ||
+								(x.Info.ShipClass == ShipClass.Colorado級) || (x.Info.ShipClass == ShipClass.Iowa級) || (x.Info.ShipClass == ShipClass.North_Carolina級) || (x.Info.ShipClass == ShipClass.South_Dakota級) ||
+								(x.Info.ShipClass == ShipClass.Casablanca級) || (x.Info.ShipClass == ShipClass.Essex級) || (x.Info.ShipClass == ShipClass.Lexington級) || (x.Info.ShipClass == ShipClass.Yorktown級) ||
+								(x.Info.ShipClass == ShipClass.Atlanta級) || (x.Info.ShipClass == ShipClass.St_Louis級) || (x.Info.ShipClass == ShipClass.Northampton級) ?
+									4 * x.EquippedItems.Count(s => s.Item.Info.Id == 315 && s.Item.Info.Name == "SG レーダー(初期型)") : 0 : 0;
 					return x.ViewRange - x.EquippedItems.Sum(s => s.Item.Info.RawData.api_saku) - ex;
 				})
 				.Sum(x => Math.Sqrt(x));
