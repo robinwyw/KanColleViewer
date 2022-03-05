@@ -16,7 +16,9 @@ namespace Grabacr07.KanColleWrapper
 		/// <summary>
 		/// <see cref="SlotItems"/> の装備数を取得します。
 		/// </summary>
-		public int SlotItemsCount => this.SlotItems.Count;
+		public int SlotItemsCount => this.SlotItems.Count(x => x.Value.Info.Type != SlotItemType.戦闘糧食 &&
+															   x.Value.Info.Type != SlotItemType.応急修理要員 &&
+															   x.Value.Info.Type != SlotItemType.補給物資);
 
 		#region SlotItems 変更通知プロパティ
 
