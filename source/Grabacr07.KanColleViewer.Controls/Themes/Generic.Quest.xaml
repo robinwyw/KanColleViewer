@@ -138,6 +138,12 @@
 									Property="Fill"
 									Value="#FFB53B36" />
 						</Trigger>
+						<Trigger Property="Category"
+								 Value="Building2">
+							<Setter TargetName="Icon"
+									Property="Fill"
+									Value="#FF64443B" />
+						</Trigger>
 						<Trigger Property="IsDetailView"
 								 Value="False">
 							<Setter TargetName="DetailView"

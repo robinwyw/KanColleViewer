@@ -31,6 +31,7 @@ namespace Grabacr07.KanColleViewer.Converters
 					case QuestCategory.Supply:
 						return Color.FromRgb(178, 147, 47);
 					case QuestCategory.Building:
+					case QuestCategory.Building2:
 						return Color.FromRgb(100, 68, 59);
 					case QuestCategory.Remodelling:
 						return Color.FromRgb(169, 135, 186);

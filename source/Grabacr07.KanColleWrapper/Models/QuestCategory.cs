@@ -59,9 +59,14 @@ namespace Grabacr07.KanColleWrapper.Models
 		/// </summary>
 		Sortie3 = 9,
 
-		/// <summary>
+		/// <summary>		
 		/// その他。
 		/// </summary>
 		Other = 10,
+
+		/// <summary>
+		/// 工廠任務。
+		/// </summary>
+		Building2 = 11,
 	}
 }
