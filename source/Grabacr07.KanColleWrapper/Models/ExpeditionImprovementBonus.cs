@@ -61,6 +61,7 @@ namespace Grabacr07.KanColleWrapper.Models
 				switch (slotItem.Info.Type)
 				{
 					case SlotItemType.小口径主砲:
+					case SlotItemType.副砲:
 					case SlotItemType.小型電探:
 					case SlotItemType.対艦強化弾:
 					case SlotItemType.対空機銃:
@@ -71,10 +72,7 @@ namespace Grabacr07.KanColleWrapper.Models
 					case SlotItemType.大口径主砲_II:
 					case SlotItemType.大型電探:
 					case SlotItemType.大型電探_II:
-						return Math.Sqrt(slotItem.Level);
-
-					case SlotItemType.副砲:
-						return 0.15 * slotItem.Level;
+						return Math.Sqrt(slotItem.Level);				
 
 					default:
 						return .0;
@@ -88,11 +86,9 @@ namespace Grabacr07.KanColleWrapper.Models
 			{
 				switch (slotItem.Info.IconType)
 				{
+					case SlotItemIconType.HighAngleGun:
 					case SlotItemIconType.AAGun:
 						return Math.Sqrt(slotItem.Level);
-
-					case SlotItemIconType.HighAngleGun:
-						return 0.3 * slotItem.Level;
 
 					default:
 						return .0;
