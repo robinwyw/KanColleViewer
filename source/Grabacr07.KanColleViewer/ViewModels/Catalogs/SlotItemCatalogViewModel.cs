@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
@@ -16,6 +16,18 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 
 		public SlotItemCatalogWindowSettings Settings { get; }
 
+		public IReadOnlyCollection<SlotItemEquipTypeViewModel> SlotItemEquipTypes { get; }
+
+		public bool CheckAllSlotItemEquipTypes
+		{
+			get { return this.SlotItemEquipTypes.All(x => x.IsSelected); }
+			set
+			{
+				foreach (var type in this.SlotItemEquipTypes) type.Set(value);
+				this.Update();
+			}
+		}
+
 		#region SlotItems 変更通知プロパティ
 
 		private IReadOnlyCollection<SlotItemCounter> _SlotItems;
@@ -28,6 +40,25 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 				if (this._SlotItems != value)
 				{
 					this._SlotItems = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+
+		#endregion
+
+		#region IsOpenFilterSettings 変更通知プロパティ
+
+		private bool _IsOpenFilterSettings;
+
+		public bool IsOpenFilterSettings
+		{
+			get { return this._IsOpenFilterSettings; }
+			set
+			{
+				if (this._IsOpenFilterSettings != value)
+				{
+					this._IsOpenFilterSettings = value;
 					this.RaisePropertyChanged();
 				}
 			}
@@ -59,6 +90,14 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 			this.Title = "所有装備一覧";
 			this.Settings = new SlotItemCatalogWindowSettings();
 
+			this.SlotItemEquipTypes = KanColleClient.Current.Master.SlotItemEquipTypes
+				.Select(kvp => new SlotItemEquipTypeViewModel(kvp.Value)
+				{
+					IsSelected = true,
+					SelectionChangedAction = () => this.Update()
+				})
+				.ToList();
+
 			this.updateSource
 				.Do(_ => this.IsReloading = true)
 				.Throttle(TimeSpan.FromMilliseconds(100))
@@ -73,10 +112,11 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 
 		public void Update()
 		{
+			this.RaisePropertyChanged(nameof(this.CheckAllSlotItemEquipTypes));
 			this.updateSource.OnNext(Unit.Default);
 		}
 
-		private static List<SlotItemCounter> UpdateCore()
+		private List<SlotItemCounter> UpdateCore()
 		{
 			var ships = KanColleClient.Current.Homeport.Organization.Ships.Values.ToList();
 			var items = KanColleClient.Current.Homeport.Itemyard.SlotItems.Values.ToList();
@@ -98,9 +138,17 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 			}
 
 			return dic.Values
+				.Where(x => this.SlotItemEquipTypes.Where(t => t.IsSelected).Select(y => y.Id)
+						.Contains(x.Target.EquipType.Id))
 				.OrderBy(x => x.Target.CategoryId)
 				.ThenBy(x => x.Target.Id)
 				.ToList();
+		}
+
+		public void SetSlotItemEquipType(int[] ids)
+		{
+			foreach (var type in this.SlotItemEquipTypes) type.Set(ids.Any(id => type.Id == id));
+			this.Update();
 		}
 	}
 }
