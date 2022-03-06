@@ -442,6 +442,28 @@
 													 IsChecked="{Binding Unbrilliant, Mode=TwoWay}" />
 									</WrapPanel>
 								</Grid>
+
+								<Grid DataContext="{Binding ShipSlotExFilter}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"
+														  SharedSizeGroup="FilterName" />
+										<ColumnDefinition Width="10" />
+										<ColumnDefinition Width="*" />
+									</Grid.ColumnDefinitions>
+									<TextBlock Margin="0,2"
+											   HorizontalAlignment="Right">
+										<Run Text="補強増設" />
+										<Run Text=":" />
+									</TextBlock>
+									<WrapPanel Grid.Column="2">
+										<RadioButton Content="{Binding Resources.ShipCatalogWindow_FilterSettings_AllShips, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
+													 IsChecked="{Binding Both, Mode=TwoWay}" />
+										<RadioButton Content="解放あり"
+													 IsChecked="{Binding IsAble, Mode=TwoWay}" />
+										<RadioButton Content="解放なし"
+													 IsChecked="{Binding IsNotAble, Mode=TwoWay}" />
+									</WrapPanel>
+								</Grid>
 							</StackPanel>
 						</WrapPanel>
 					</Border>

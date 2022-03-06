@@ -182,6 +182,84 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 		}
 	}
 
+	public class ShipSlotExFilter : ShipCatalogFilter
+	{
+		#region Both 変更通知プロパティ
+
+		private bool _Both;
+
+		public bool Both
+		{
+			get { return this._Both; }
+			set
+			{
+				if (this._Both != value)
+				{
+					this._Both = value;
+					this.RaisePropertyChanged();
+					this.Update();
+				}
+			}
+		}
+
+		#endregion
+
+		#region IsAble 変更通知プロパティ
+
+		private bool _IsAble;
+
+		public bool IsAble
+		{
+			get { return this._IsAble; }
+			set
+			{
+				if (this._IsAble != value)
+				{
+					this._IsAble = value;
+					this.RaisePropertyChanged();
+					this.Update();
+				}
+			}
+		}
+
+		#endregion
+
+		#region _IsNotAble 変更通知プロパティ
+
+		private bool _IsNotAble;
+
+		public bool IsNotAble
+		{
+			get { return this._IsNotAble; }
+			set
+			{
+				if (this._IsNotAble != value)
+				{
+					this._IsNotAble = value;
+					this.RaisePropertyChanged();
+					this.Update();
+				}
+			}
+		}
+
+		#endregion
+
+		public ShipSlotExFilter(Action updateAction)
+			: base(updateAction)
+		{
+			this._Both = true;
+		}
+
+		public override bool Predicate(Ship ship)
+		{
+			if (this.Both) return true;
+			if (this.IsAble && ship.IsSlotexAble) return true;
+			if (this.IsNotAble && !ship.IsSlotexAble) return true;
+
+			return false;
+		}
+	}
+
 	public class ShipSpeedFilter : ShipCatalogFilter
 	{
 		#region Fastest 変更通知プロパティ
