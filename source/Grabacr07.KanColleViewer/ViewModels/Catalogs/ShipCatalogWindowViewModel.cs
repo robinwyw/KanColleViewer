@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
@@ -25,6 +25,7 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 
 		public ShipLevelFilter ShipLevelFilter { get; }
 		public ShipLockFilter ShipLockFilter { get; }
+		public ShipSlotExFilter ShipSlotExFilter { get; }
 		public ShipSpeedFilter ShipSpeedFilter { get; }
 		public ShipModernizeFilter ShipModernizeFilter { get; }
 		public ShipRemodelingFilter ShipRemodelingFilter { get; }
@@ -138,6 +139,7 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 
 			this.ShipLevelFilter = new ShipLevelFilter(this.Update);
 			this.ShipLockFilter = new ShipLockFilter(this.Update);
+			this.ShipSlotExFilter = new ShipSlotExFilter(this.Update);
 			this.ShipSpeedFilter = new ShipSpeedFilter(this.Update);
 			this.ShipModernizeFilter = new ShipModernizeFilter(this.Update);
 			this.ShipRemodelingFilter = new ShipRemodelingFilter(this.Update);
@@ -176,6 +178,7 @@ namespace Grabacr07.KanColleViewer.ViewModels.Catalogs
 					.Where(x => this.ShipTypes.Where(t => t.IsSelected).Any(t => x.Info.ShipType.Id == t.Id))
 					.Where(this.ShipLevelFilter.Predicate)
 					.Where(this.ShipLockFilter.Predicate)
+					.Where(this.ShipSlotExFilter.Predicate)
 					.Where(this.ShipSpeedFilter.Predicate)
 					.Where(this.ShipModernizeFilter.Predicate)
 					.Where(this.ShipRemodelingFilter.Predicate)

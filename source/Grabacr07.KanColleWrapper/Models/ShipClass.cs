@@ -118,6 +118,13 @@ namespace Grabacr07.KanColleWrapper.Models
 		Yorktown級 = 105,
 		St_Louis級 = 106,
 		North_Carolina級 = 107,
-		Town級 = 108, 
+		Town級 = 108,
+		潜高型 = 109,
+		Brooklyn級 = 110,
+		宗谷型雑用運送艦 = 111,
+		Illustrious級 = 112,
+		Conte_di_Cavour級 = 113,
+		Gato級 = 114,
+		特2TL型 = 115,
 	}
 }

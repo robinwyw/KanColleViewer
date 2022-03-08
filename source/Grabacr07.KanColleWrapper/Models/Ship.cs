@@ -36,6 +36,11 @@ namespace Grabacr07.KanColleWrapper.Models
 		public bool IsLocked => this.RawData.api_locked == 1;
 
 		/// <summary>
+		/// 艦娘の増設スロットが解放されているかどうかを示す値を取得します。
+		/// </summary>
+		public bool IsSlotexAble => this.RawData.api_slot_ex != 0;
+
+		/// <summary>
 		/// 艦娘の現在の累積経験値を取得します。
 		/// </summary>
 		public int Exp => this.RawData.api_exp.Get(0) ?? 0;
