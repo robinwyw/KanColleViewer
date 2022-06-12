@@ -246,6 +246,11 @@ namespace Grabacr07.KanColleWrapper.Models
 		LandBasedAntiSubmarineAttacker = 47,
 
 		/// <summary>
+		/// 襲撃機。
+		/// </summary>
+		AssaultPlane = 48,
+
+		/// <summary>
 		/// 大型陸上機。
 		/// </summary>
 		HeavyBomber = 49,

@@ -1075,6 +1075,37 @@
 				</Setter>
 			</Trigger>
 			<Trigger Property="Type"
+					 Value="AssaultPlane">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type controls:SlotItemIcon}">
+							<Viewbox>
+								<Grid>
+									<Path Data="M35,52.875 L38.625,50 42.625,52.125 43.75,52.25 48.375,55 50,53 52.875,52.375 52.25,55 55,56.875 61.375,52.25 66.8125,51.15625 73.583333,47 68.375,43.375 70,41.125 75,42.5 76.75,40 76.5,38.25 77.75,38.5 80,36.5 80,37 80,40 81.625,42.25 81.75,43.375 90,48.5&#xD;&#xA;88.25,50 83,50 80,48.75 66.875,60 70,62.375 72.5,65 62.125,75 60,75 58.625,73.875 57.75,70 60,70 58.75,68 55,67.875 50,71.625 43.75,72 43.125,70 50,63.25 47.625,61.625 45,63.625 43.875,63.75 42.625,65 37.875,65 38.5,60&#xD;&#xA;40,57.875 41.25,57 40,55 38.5,55 z"
+										  Fill="#FF39B74E"
+										  HorizontalAlignment="Left"
+										  Height="139"
+										  Stretch="Uniform"
+										  VerticalAlignment="Top"
+										  Width="235" />
+									<ed:RegularPolygon PointCount="6"
+													   InnerRadius="1"
+													   Stretch="Fill"
+													   Stroke="Black"
+													   StrokeThickness="2"
+													   Fill="#FF39B74E"
+													   Width="126"
+													   Height="146"
+													   HorizontalAlignment="Left"
+													   VerticalAlignment="Top"
+													   Margin="91.033,50.606,0,0" />
+								</Grid>
+							</Viewbox>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+			<Trigger Property="Type"
 					 Value="HeavyBomber">
 				<Setter Property="Template">
 					<Setter.Value>
