@@ -224,11 +224,8 @@ namespace Grabacr07.KanColleViewer.Models.Settings
 					values.Add(httpPort == 0 ? $"http={httpHost}" : $"http={httpHost}:{httpPort}");
 				if (this.IsUseHttpProxyForAllProtocols)
 				{
-					if (!string.IsNullOrWhiteSpace(this.HttpHost))
-					{
-						values.Add(this.HttpPort == 0 ? $"https={this.HttpHost}" : $"https={this.HttpHost}:{this.HttpPort}");
-						values.Add(this.HttpPort == 0 ? $"ftp={this.HttpHost}" : $"ftp={this.HttpHost}:{this.HttpPort}");
-					}
+						values.Add(httpPort == 0 ? $"https={this.HttpHost}" : $"https={this.HttpHost}:{httpPort}");
+						values.Add(httpPort == 0 ? $"ftp={this.HttpHost}" : $"ftp={this.HttpHost}:{httpPort}");
 				}
 				else
 				{
