@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,12 +9,12 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Codeplex.Data;
-using Nekoxy;
 using Grabacr07.KanColleWrapper.Internal;
 using Grabacr07.KanColleWrapper.Models;
 using Grabacr07.KanColleWrapper.Models.Raw;
-using System.Web;
+using Titanium.Web.Proxy.EventArguments;
 
 namespace Grabacr07.KanColleWrapper
 {
@@ -111,11 +111,16 @@ namespace Grabacr07.KanColleWrapper
 				.Subscribe(this.Update);
 		}
 
-		private static kcsapi_questlist Serialize(Session session)
+		private static kcsapi_questlist Serialize(SessionEventArgs e)
 		{
 			try
 			{
-				var djson = DynamicJson.Parse(session.GetResponseAsJson());
+				var responseJson = e.GetResponseBodyAsString().GetAwaiter().GetResult();
+				if (responseJson.StartsWith("svdata="))
+				{
+					responseJson = responseJson.Substring("svdata=".Length);
+				}
+				var djson = DynamicJson.Parse(responseJson);
 				var questlist = new kcsapi_questlist
 				{
 					api_count = Convert.ToInt32(djson.api_data.api_count),
