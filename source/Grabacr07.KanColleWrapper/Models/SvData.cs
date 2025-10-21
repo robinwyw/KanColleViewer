@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Grabacr07.KanColleWrapper.Internal;
 using Grabacr07.KanColleWrapper.Models.Raw;
-using Newtonsoft.Json;
 using Titanium.Web.Proxy.EventArguments;
 
 namespace Grabacr07.KanColleWrapper.Models
@@ -60,8 +59,12 @@ namespace Grabacr07.KanColleWrapper.Models
 				{
 					responseJson = responseJson.Substring("svdata=".Length);
 				}
-				var rawResult = JsonConvert.DeserializeObject<svdata<T>>(responseJson);
-				return new SvData<T>(rawResult, requestBody);
+				using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(responseJson)))
+				{
+					var serializer = new DataContractJsonSerializer(typeof(svdata<T>));
+					var rawResult = (svdata<T>)serializer.ReadObject(ms);
+					return new SvData<T>(rawResult, requestBody);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -103,8 +106,12 @@ namespace Grabacr07.KanColleWrapper.Models
 				{
 					responseJson = responseJson.Substring("svdata=".Length);
 				}
-				var rawResult = JsonConvert.DeserializeObject<svdata>(responseJson);
-				return new SvData(rawResult, requestBody);
+				using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(responseJson)))
+				{
+					var serializer = new DataContractJsonSerializer(typeof(svdata));
+					var rawResult = (svdata)serializer.ReadObject(ms);
+					return new SvData(rawResult, requestBody);
+				}
 			}
 			catch (Exception ex)
 			{
