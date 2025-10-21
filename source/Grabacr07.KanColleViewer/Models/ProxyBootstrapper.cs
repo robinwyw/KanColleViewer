@@ -41,16 +41,20 @@ namespace Grabacr07.KanColleViewer.Models
 			KanColleClient.Current.Proxy.UpstreamProxySettings = new Settings.NetworkSettings.Proxy();
 		}
 
-		public void Try()
+		public async Task Try()
 		{
 			this.ListeningPort = Settings.NetworkSettings.LocalProxy.Port;
 
 			try
 			{
-				if(Settings.NetworkSettings.LocalProxy.IsEnabled)
+				if (Settings.NetworkSettings.LocalProxy.IsEnabled)
 					KanColleClient.Current.Proxy.Startup(this.ListeningPort);
 				else
+				{
 					KanColleClient.Current.Proxy.Startup();
+					//SimpleProxy simpleProxy = new SimpleProxy();
+					//await simpleProxy.StartAsync();
+				}
 
 				this.Result = ProxyBootstrapResult.Success;
 			}

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,10 +8,9 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Collections.Specialized;
-using Nekoxy;
-using Grabacr07.KanColleWrapper.Models.Raw;
 using Grabacr07.KanColleWrapper.Internal;
+using Grabacr07.KanColleWrapper.Models.Raw;
+using Titanium.Web.Proxy.EventArguments;
 
 namespace Grabacr07.KanColleWrapper.Models
 {
@@ -46,19 +46,34 @@ namespace Grabacr07.KanColleWrapper.Models
 
 		#region Parse methods (generic)
 
-		public static SvData<T> Parse<T>(Session session)
+		public static SvData<T> Parse<T>(SessionEventArgs e)
 		{
-			var bytes = Encoding.UTF8.GetBytes(session.GetResponseAsJson());
-			var serializer = new DataContractJsonSerializer(typeof(svdata<T>));
-			using (var stream = new MemoryStream(bytes))
+			try
 			{
-				var rawResult = serializer.ReadObject(stream) as svdata<T>;
-				var result = new SvData<T>(rawResult, session.Request.BodyAsString);
-				return result;
+				var responseJson = e.GetResponseBodyAsString().GetAwaiter().GetResult();
+				var requestBody = e.GetRequestBodyAsString().GetAwaiter().GetResult();
+
+				if (string.IsNullOrWhiteSpace(responseJson))
+					throw new InvalidOperationException("Response is empty.");
+				if (responseJson.StartsWith("svdata="))
+				{
+					responseJson = responseJson.Substring("svdata=".Length);
+				}
+				using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(responseJson)))
+				{
+					var serializer = new DataContractJsonSerializer(typeof(svdata<T>));
+					var rawResult = (svdata<T>)serializer.ReadObject(ms);
+					return new SvData<T>(rawResult, requestBody);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"[SvData<T>] Parse failed: {ex}");
+				throw;
 			}
 		}
 
-		public static bool TryParse<T>(Session session, out SvData<T> result)
+		public static bool TryParse<T>(SessionEventArgs session, out SvData<T> result)
 		{
 			try
 			{
@@ -78,19 +93,34 @@ namespace Grabacr07.KanColleWrapper.Models
 
 		#region Parse methods (non generic)
 
-		public static SvData Parse(Session session)
+		public static SvData Parse(SessionEventArgs e)
 		{
-			var bytes = Encoding.UTF8.GetBytes(session.GetResponseAsJson());
-			var serializer = new DataContractJsonSerializer(typeof(svdata));
-			using (var stream = new MemoryStream(bytes))
+			try
 			{
-				var rawResult = serializer.ReadObject(stream) as svdata;
-				var result = new SvData(rawResult, session.Request.BodyAsString);
-				return result;
+				var responseJson = e.GetResponseBodyAsString().GetAwaiter().GetResult();
+				var requestBody = e.GetRequestBodyAsString().GetAwaiter().GetResult();
+
+				if (string.IsNullOrWhiteSpace(responseJson))
+					throw new InvalidOperationException("Response is empty.");
+				if (responseJson.StartsWith("svdata="))
+				{
+					responseJson = responseJson.Substring("svdata=".Length);
+				}
+				using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(responseJson)))
+				{
+					var serializer = new DataContractJsonSerializer(typeof(svdata));
+					var rawResult = (svdata)serializer.ReadObject(ms);
+					return new SvData(rawResult, requestBody);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"[SvData] Parse failed: {ex}");
+				throw;
 			}
 		}
 
-		public static bool TryParse(Session session, out SvData result)
+		public static bool TryParse(SessionEventArgs session, out SvData result)
 		{
 			try
 			{
