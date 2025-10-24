@@ -32,7 +32,8 @@ namespace Grabacr07.KanColleViewer.Models.Cef
 
 			cefSettings.CefCommandLineArgs.Add("disable-threaded-scrolling");
 			cefSettings.CefCommandLineArgs.Add("disable-features", "AudioServiceOutOfProcess,CalculateNativeWinOcclusion");
-			cefSettings.CefCommandLineArgs.Add("proxy-server", Settings.NetworkSettings.LocalProxySettingsString);
+			// It seems the proxy settings is used for upstream , here should listen KCV port?
+			cefSettings.CefCommandLineArgs.Add("proxy-server", "127.0.0.1:37564");
 
 			CefSharpSettings.SubprocessExitIfParentProcessClosed = true;
 			CefSharp.Cef.Initialize(cefSettings);

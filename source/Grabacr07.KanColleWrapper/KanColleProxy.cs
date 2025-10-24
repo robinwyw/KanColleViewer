@@ -160,7 +160,7 @@ namespace Grabacr07.KanColleWrapper
 				case ProxyType.SystemProxy:
 					Console.WriteLine("[ProxyConfig] Use system proxy");
 					var sysProxy = WebRequest.GetSystemWebProxy();
-					var uri = sysProxy.GetProxy(new Uri("http://example.com"));
+					var uri = sysProxy.GetProxy(new Uri("https://play.games.dmm.com/game/kancolle"));
 					if (uri != null)
 					{
 						s.UpStreamHttpProxy = new ExternalProxy { HostName = uri.Host, Port = uri.Port };
@@ -175,7 +175,7 @@ namespace Grabacr07.KanColleWrapper
 				default:
 					Console.WriteLine("[ProxyConfig] Use system proxy");
 					sysProxy = WebRequest.GetSystemWebProxy();
-					uri = sysProxy.GetProxy(new Uri("http://example.com"));
+					uri = sysProxy.GetProxy(new Uri("https://play.games.dmm.com/game/kancolle"));
 					if (uri != null)
 					{
 						s.UpStreamHttpProxy = new ExternalProxy { HostName = uri.Host, Port = uri.Port };

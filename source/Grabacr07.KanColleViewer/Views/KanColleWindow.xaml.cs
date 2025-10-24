@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using Grabacr07.KanColleViewer.Models.Settings;
 using Livet;
 using MetroTrilithon.Lifetime;
@@ -19,6 +21,8 @@ namespace Grabacr07.KanColleViewer.Views
 		private Size? previousBrowserSize;
 		private Dock? previousDock;
 
+		[DllImport("user32.dll")]
+		private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
 		public KanColleWindow()
 		{
@@ -27,6 +31,30 @@ namespace Grabacr07.KanColleViewer.Views
 			this.settings = SettingsHost.Instance<KanColleWindowSettings>();
 			this.settings.IsSplit.Subscribe(_ => this.ChangeSizeByDock()).AddTo(this);
 			this.settings.Dock.Subscribe(_ => this.ChangeSizeByDock()).AddTo(this);
+			this.StateChanged += MainWindow_StateChanged;
+		}
+
+		private async void MainWindow_StateChanged(object sender, EventArgs e)
+		{
+			if (this.WindowState == WindowState.Normal)
+			{
+				await Task.Delay(150); // 等待布局恢复
+				var hwnd = new WindowInteropHelper(this).Handle;
+				if (hwnd != IntPtr.Zero)
+				{
+					// 获取当前窗口位置
+					var rect = new System.Drawing.Rectangle(
+						(int)this.Left, (int)this.Top,
+						(int)this.Width, (int)this.Height);
+
+					// 模拟“轻微移动”再复位，强制触发 WM_MOVE / WM_WINDOWPOSCHANGED
+					MoveWindow(hwnd, rect.X + 1, rect.Y, rect.Width, rect.Height, false);
+					MoveWindow(hwnd, rect.X, rect.Y, rect.Width, rect.Height, false);
+
+					// 再让 Chromium 刷新视口
+					kanColleHost.WebBrowser?.GetBrowser()?.GetHost()?.WasResized();
+				}
+			}
 		}
 
 		private void HandleKanColleHostSizeChangeRequested(object sender, Size size)
