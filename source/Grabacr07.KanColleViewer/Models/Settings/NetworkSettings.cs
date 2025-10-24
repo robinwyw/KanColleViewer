@@ -111,7 +111,7 @@ namespace Grabacr07.KanColleViewer.Models.Settings
 						}
 					case ProxyType.DirectAccess:
 						//プロキシを使用しない場合、HTTPだけNekoxyを通し、後は直アクセス
-						return $"http=127.0.0.1:{port}";
+						return $"127.0.0.1:{port}";
 					default:
 						throw new IndexOutOfRangeException();
 				}
@@ -220,22 +220,15 @@ namespace Grabacr07.KanColleViewer.Models.Settings
 				var httpHost = overrideHttpHost ?? this.HttpHost;
 				var httpPort = overrideHttpPort != 0 ? overrideHttpPort : this.HttpPort;
 				var values = new List<string>();
+				// It seems here should use KCV listenning port for all protocol, not each protocol port?
 				if (!string.IsNullOrWhiteSpace(httpHost))
 					values.Add(httpPort == 0 ? $"http={httpHost}" : $"http={httpHost}:{httpPort}");
-				if (this.IsUseHttpProxyForAllProtocols)
-				{
-						values.Add(httpPort == 0 ? $"https={this.HttpHost}" : $"https={this.HttpHost}:{httpPort}");
-						values.Add(httpPort == 0 ? $"ftp={this.HttpHost}" : $"ftp={this.HttpHost}:{httpPort}");
-				}
-				else
-				{
-					if (!string.IsNullOrWhiteSpace(this.HttpsHost))
-						values.Add(this.HttpsPort == 0 ? $"https={this.HttpsHost}" : $"https={this.HttpsHost}:{this.HttpsPort}");
-					if (!string.IsNullOrWhiteSpace(this.FtpHost))
-						values.Add(this.FtpPort == 0 ? $"ftp={this.FtpHost}" : $"ftp={this.FtpHost}:{this.FtpPort}");
-					if (!string.IsNullOrWhiteSpace(this.SocksHost))
-						values.Add(this.SocksPort == 0 ? $"socks={this.SocksHost}" : $"socks={this.SocksHost}:{this.SocksPort}");
-				}
+				if (!string.IsNullOrWhiteSpace(this.HttpsHost))
+					values.Add(this.HttpsPort == 0 ? $"https={this.HttpsHost}" : $"https={this.HttpsHost}:{httpPort}");
+				if (!string.IsNullOrWhiteSpace(this.FtpHost))
+					values.Add(this.FtpPort == 0 ? $"ftp={this.FtpHost}" : $"ftp={this.FtpHost}:{httpPort}");
+				if (!string.IsNullOrWhiteSpace(this.SocksHost))
+					values.Add(this.SocksPort == 0 ? $"socks5={this.SocksHost}" : $"socks5={this.SocksHost}:{httpPort}");
 				return string.Join(";", values);
 			}
 		}
