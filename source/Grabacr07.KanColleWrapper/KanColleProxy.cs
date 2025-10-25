@@ -53,10 +53,12 @@ namespace Grabacr07.KanColleWrapper
 		public KanColleProxy()
 		{
 			//AllocConsole();
+			// EnableConnectionPool=true will case error event in Windows
 			proxyServer = new ProxyServer
 			{
-				EnableHttp2 = true,
-				EnableConnectionPool = true
+				EnableHttp2 = false,
+				ReuseSocket = false,
+				EnableConnectionPool = false
 			};
 
 			// 证书支持 HTTPS 解密
