@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 using Grabacr07.KanColleViewer.Models.Settings;
 using Livet;
 using MetroTrilithon.Lifetime;
@@ -38,21 +39,31 @@ namespace Grabacr07.KanColleViewer.Views
 		{
 			if (this.WindowState == WindowState.Normal)
 			{
-				await Task.Delay(150); // 等待布局恢复
+				await Task.Delay(150);
 				var hwnd = new WindowInteropHelper(this).Handle;
 				if (hwnd != IntPtr.Zero)
 				{
-					// 获取当前窗口位置
-					var rect = new System.Drawing.Rectangle(
-						(int)this.Left, (int)this.Top,
-						(int)this.Width, (int)this.Height);
+					// 获取屏幕的 DPI
+					var source = PresentationSource.FromVisual(this);
+					double dpiX = 96.0, dpiY = 96.0;
+					if (source?.CompositionTarget != null)
+					{
+						dpiX *= source.CompositionTarget.TransformToDevice.M11;
+						dpiY *= source.CompositionTarget.TransformToDevice.M22;
+					}
 
-					// 模拟“轻微移动”再复位，强制触发 WM_MOVE / WM_WINDOWPOSCHANGED
-					MoveWindow(hwnd, rect.X + 1, rect.Y, rect.Width, rect.Height, false);
-					MoveWindow(hwnd, rect.X, rect.Y, rect.Width, rect.Height, false);
+					// 将逻辑像素换算为物理像素
+					int x = (int)(this.Left * dpiX / 96.0);
+					int y = (int)(this.Top * dpiY / 96.0);
+					int width = (int)(this.Width * dpiX / 96.0);
+					int height = (int)(this.Height * dpiY / 96.0);
 
-					// 再让 Chromium 刷新视口
-					kanColleHost.WebBrowser?.GetBrowser()?.GetHost()?.WasResized();
+					// 轻微移动再复位，触发 WM_MOVE / WM_WINDOWPOSCHANGED
+					MoveWindow(hwnd, x + 1, y, width, height, false);
+					MoveWindow(hwnd, x, y, width, height, false);
+
+					// 重新通知 CEF
+					kanColleHost?.WebBrowser?.GetBrowser()?.GetHost()?.WasResized();
 				}
 			}
 		}

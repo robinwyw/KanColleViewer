@@ -93,28 +93,29 @@ namespace Grabacr07.KanColleViewer.Models.Settings
 			get
 			{
 				var port = LocalProxy.IsEnabled ? LocalProxy.Port.Value : LocalProxy.Port.Default;
-				switch (Proxy.Type.Value)
-				{
-					case ProxyType.SystemProxy:
-						{
-							var proxyConfig = new Win32.WinHttpCurrentUserIEProxyConfig();
-							Win32.WinHttp.WinHttpGetIEProxyConfigForCurrentUser(ref proxyConfig);
-							var settings = IEStyleProxySettingsBuilder.Parse(proxyConfig.Proxy);
-							return settings.ToIEStyleSettings("127.0.0.1", port);
-						}
+				return "http=127.0.0.1:" + port + ";https=127.0.0.1:" + port;
+				//switch (Proxy.Type.Value)
+				//{
+				//	case ProxyType.SystemProxy:
+				//		{
+				//			var proxyConfig = new Win32.WinHttpCurrentUserIEProxyConfig();
+				//			Win32.WinHttp.WinHttpGetIEProxyConfigForCurrentUser(ref proxyConfig);
+				//			var settings = IEStyleProxySettingsBuilder.Parse(proxyConfig.Proxy);
+				//			return settings.ToIEStyleSettings("127.0.0.1", port);
+				//		}
 
-					case ProxyType.SpecificProxy:
-						//指定プロキシの場合、HTTPだけNekoxyを通し、後は指定プロキシに流す
-						{
-							var settings = IEStyleProxySettingsBuilder.Parse(new Proxy());
-							return settings.ToIEStyleSettings("127.0.0.1", port);
-						}
-					case ProxyType.DirectAccess:
-						//プロキシを使用しない場合、HTTPだけNekoxyを通し、後は直アクセス
-						return $"127.0.0.1:{port}";
-					default:
-						throw new IndexOutOfRangeException();
-				}
+				//	case ProxyType.SpecificProxy:
+				//		//指定プロキシの場合、HTTPだけNekoxyを通し、後は指定プロキシに流す
+				//		{
+				//			var settings = IEStyleProxySettingsBuilder.Parse(new Proxy());
+				//			return settings.ToIEStyleSettings("127.0.0.1", port);
+				//		}
+				//	case ProxyType.DirectAccess:
+				//		//プロキシを使用しない場合、HTTPだけNekoxyを通し、後は直アクセス
+				//		return $"127.0.0.1:{port}";
+				//	default:
+				//		throw new IndexOutOfRangeException();
+				//}
 			}
 		}
 
